@@ -1,3 +1,124 @@
+###################### Winlogbeat Configuration Example ########################
+
+# This file is an example configuration file highlighting only the most common
+# options. The winlogbeat.reference.yml file from the same directory contains
+# all the supported options with more comments. You can use it as a reference.
+#
+# You can find the full configuration reference here:
+# https://www.elastic.co/guide/en/beats/winlogbeat/index.html
+
+# ======================== Winlogbeat specific options =========================
+
+# event_logs specifies a list of event logs to monitor as well as any
+# accompanying options. The YAML data type of event_logs is a list of
+# dictionaries.
+#
+# The supported keys are name, id, xml_query, tags, fields, fields_under_root,
+# forwarded, ignore_older, level, event_id, provider, and include_xml.
+# The xml_query key requires an id and must not be used with the name,
+# ignore_older, level, event_id, or provider keys. Please visit the
+# documentation for the complete details of each option.
+# https://go.es.io/WinlogbeatConfig
+
+winlogbeat.event_logs:
+  - name: Application
+    ignore_older: 72h
+
+  - name: System
+    ignore_older: 72h
+
+  - name: Security
+    ignore_older: 72h
+    include_xml: true
+
+  - name: Microsoft-Windows-Sysmon/Operational
+    ignore_older: 72h
+    include_xml: true
+
+  - name: Windows PowerShell
+    event_id: 400, 403, 600, 800
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-PowerShell/Operational
+    event_id: 4103, 4104, 4105, 4106
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-WMI-Activity/Operational
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-TaskScheduler/Operational
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-TerminalServices-LocalSessionManager/Operational
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-GroupPolicy/Operational
+    ignore_older: 72h
+    
+  - name: Microsoft-Windows-Winlogon/Operational
+    ignore_older: 72h
+
+  - name: Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational
+    ignore_older: 72h
+
+
+# ====================== Elasticsearch template settings =======================
+
+setup.template.settings:
+  index.number_of_shards: 1
+  #index.codec: best_compression
+  #_source.enabled: false
+
+
+# ================================== General ===================================
+
+# The name of the shipper that publishes the network data. It can be used to group
+# all the transactions sent by a single shipper in the web interface.
+#name:
+
+# The tags of the shipper are included in their field with each
+# transaction published.
+#tags: ["service-X", "web-tier"]
+
+# Optional fields that you can specify to add additional information to the
+# output.
+#fields:
+#  env: staging
+
+# ================================= Dashboards =================================
+# These settings control loading the sample dashboards to the Kibana index. Loading
+# the dashboards is disabled by default and can be enabled either by setting the
+# options here or by using the setup command.
+#setup.dashboards.enabled: false
+
+# The URL from where to download the dashboard archive. By default, this URL
+# has a value that is computed based on the Beat name and version. For released
+# versions, this URL points to the dashboard archive on the artifacts.elastic.co
+# website.
+#setup.dashboards.url:
+
+# =================================== Kibana ===================================
+
+# Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
+# This requires a Kibana endpoint configuration.
+setup.kibana:
+
+  # Kibana Host
+  # Scheme and port can be left out and will be set to the default (http and 5601)
+  # In case you specify and additional path, the scheme is required: http://localhost:5601/path
+  # IPv6 addresses should always be defined as: https://[2001:db8::1]:5601
+  #host: "localhost:5601"
+
+  # Kibana Space ID
+  # ID of the Kibana Space into which the dashboards should be loaded. By default,
+  # the Default Space will be used.
+  #space.id:
+
+#
+
 =============================== Elastic Cloud ================================
 
 # These settings simplify using Winlogbeat with the Elastic Cloud (https://cloud.elastic.co/).
